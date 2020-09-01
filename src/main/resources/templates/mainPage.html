@@ -13,7 +13,7 @@
     <div>
         <form method="get">
             <select name="filteryear">
-                <option th:each="i : ${#numbers.sequence(2019, 2040)}" th:value="${i}" th:text="${i}"
+                <option th:each="i : ${#numbers.sequence(2019, 2039)}" th:value="${i}" th:text="${i}"
                         th:selected="${i==currentYear}"></option>
             </select>
             <select name="filtermonth">
