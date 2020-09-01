@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+
+</head>
+<body>
+<div>
+    <h2> Main Page </h2>
+    <div>
+        <form method="get">
+            <select name="filteryear">
+                <option th:each="i : ${#numbers.sequence(2019, 2040)}" th:value="${i}" th:text="${i}"
+                        th:selected="${i==currentYear}"></option>
+            </select>
+            <select name="filtermonth">
+                <option th:each="i : ${#numbers.sequence(0, 11)}" th:value="${monthEnum.values()[i]}" th:text="${monthEnum.values()[i]}"
+                        th:selected="${monthEnum.values()[i]==monthEnum.valueOf(currentMonth)}"></option>
+            </select>
+            <button type="submit" name="search">Поиск</button>
+        </form>
+    </div>
+    <div>
+
+        <th:block th:each="comService: ${comServiceList}">
+            <div>
+                <th:block th:text="${comService.getYear()}"/><br>
+                <th:block th:text="${comService.getMonth()}"/><br>
+                <th:block th:text="${comService.getName()}"/><br>
+                <th:block th:if="${comService.isCounter()}">
+                    <form method="post">
+                        Начальные показатели<input type="text" name="startIndex" placeholder="0">
+                        Последние показатели<input type="text" name="lastIndex" placeholder="0">
+                        <input type="hidden" name="year" th:value="${comService.getYear()}">
+                        <input type="hidden" name="month" th:value="${comService.getMonth()}">
+                        <input type="hidden" name="name" th:value="${comService.getName()}">
+                        <button type="submit">Добавить</button><br>
+                    </form>
+                Разница <th:block th:text="${comService.getDelta()}"/><br>
+                </th:block>
+                <th:block th:if="${!comService.isCounter()}">
+                    Площадь <th:block th:text="${comService.getArea()}"/><br>
+                </th:block>
+                Тариф <th:block th:text="${comService.getTariff()}"/><br>
+                Сумма <th:block th:text="${comService.calculCost()}"/><br><br>
+            </div>
+        </th:block>
+
+        <div>
+
+            <form method="get" action="/add_service">
+                <input type="hidden" name="year" th:value="${filteryear}">
+                <input type="hidden" name="month" th:value="${filtermonth}">
+                <button type="submit">add service</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

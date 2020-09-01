@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Service</title>
+</head>
+<body>
+<div>
+    <form method="post" name="addService">
+        <input type="text" name="yearCur" th:value="${year}">
+        <input type="text" name="monthCur" th:value="${month}">
+        <input type="text" name="name" placeholder="введите название сервиса">
+        <label >  <input type="radio" name="counter" value="yes" >Оплата по счетчику</label>
+        <label >  <input type="radio" name="counter" value="no">Оплата за площадь м2</label>
+        <input type="text" name="tariff" placeholder="введите тариф">
+        <input type="text" name="area" placeholder="площадь">
+        <button type="submit">Добавить</button>
+
+    </form>
+</div>
+</body>
+</html>
