@@ -6,12 +6,12 @@ import com.iavorskyi.repos.ComServiceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,7 +43,8 @@ public class FirstController {
                 comServiceList = comServiceRepo.findAll();
                 comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==0).collect(Collectors.toList());
                 comServiceList.forEach(comService -> {
-                    comService = comService.cloneComService();
+                    comServiceRepo.save(comService.cloneComService());
+                    System.out.println("Com Service is cloned");
                         });
                 comServiceList.forEach(a->{a.setYear(Integer.parseInt(filteryear));
                                             a.setMonth(Months.valueOf(filtermonth));
@@ -81,6 +82,15 @@ public class FirstController {
 
             comServiceRepo.save(comService);
         }
+        return "redirect:/";
+    }
+    @PostMapping("/delete")
+    public String deleteService (@RequestParam Long id){
+
+        System.out.println(id);
+        System.out.println(comServiceRepo.findById(id));
+        comServiceRepo.deleteById(id);
+
         return "redirect:/";
     }
 

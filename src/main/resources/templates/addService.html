@@ -10,15 +10,12 @@
 <body>
 <div>
     <form method="post" name="addService">
-        <input type="text" name="yearCur" th:value="${year}">
-        <input type="text" name="monthCur" th:value="${month}">
-        <input type="text" name="name" placeholder="введите название сервиса">
-        <label >  <input type="radio" name="counter" value="yes" >Оплата по счетчику</label>
-        <label >  <input type="radio" name="counter" value="no">Оплата за площадь м2</label>
+        <input type="text" name="name" placeholder="введите название сервиса"><br>
+        <label> <input type="radio" name="counter" value="yes">Оплата по счетчику</label>
+        <label> <input type="radio" name="counter" value="no">Оплата за площадь м2</label><br>
         <input type="text" name="tariff" placeholder="введите тариф">
-        <input type="text" name="area" placeholder="площадь">
+        <input type="text" name="area" placeholder="если оплата за м2">
         <button type="submit">Добавить</button>
-
     </form>
 </div>
 </body>

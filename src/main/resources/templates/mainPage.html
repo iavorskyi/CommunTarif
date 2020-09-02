@@ -16,22 +16,33 @@
         <form method="get">
             <select name="filteryear">
                 <option th:each="i : ${#numbers.sequence(2019, 2039)}" th:value="${i}" th:text="${i}"
-                        th:selected="${i==currentYear}"></option><!--заполнение вариантов выпадающего списка через цикл-->
+                        th:selected="${i==currentYear}"></option>
+                <!--заполнение вариантов выпадающего списка через цикл-->
             </select>
             <select name="filtermonth">
-                <option th:each="i : ${#numbers.sequence(0, 11)}" th:value="${monthEnum.values()[i]}" th:text="${monthEnum.values()[i]}"
-                        th:selected="${monthEnum.values()[i]==monthEnum.valueOf(currentMonth)}"></option><!--передали объект enum monthEnum и "i" выступает порядковым номером в списке-->
+                <option th:each="i : ${#numbers.sequence(0, 11)}" th:value="${monthEnum.values()[i]}"
+                        th:text="${monthEnum.values()[i]}"
+                        th:selected="${monthEnum.values()[i]==monthEnum.valueOf(currentMonth)}"></option>
+                <!--передали объект enum monthEnum и "i" выступает порядковым номером в списке-->
             </select>
             <button type="submit" name="search">Поиск</button>
+            <br><br>
         </form>
     </div>
+    <!-- Надпись над элементами с Датой -->
     <div>
-        <!-- Список элементов -->
+        <h3>Коммунальные Сервисы за
+            <th:block th:if="${filtermonth!=null}" th:text="${filtermonth}+' '"/>
+            <th:block th:if="${filtermonth!=null}" th:text="${filteryear}"/>
+            <th:block th:if="${filtermonth==null&&filteryear==null}" th:text="${currentMonth}+' '+${currentYear}"/>
+        </h3>
+    </div>
+    <!-- Список элементов -->
+    <div>
         <th:block th:each="comService: ${comServiceList}">
             <div>
-                <th:block th:text="${comService.getYear()}"/><br>
-                <th:block th:text="${comService.getMonth()}"/><br>
-                <th:block th:text="${comService.getName()}"/><br>
+                <th:block th:text="${comService.getName()}"/>
+                <br>
                 <th:block th:if="${comService.isCounter()}">
                     <!-- Форма для показаний -->
                     <form method="post">
@@ -40,16 +51,28 @@
                         <input type="hidden" name="year" th:value="${comService.getYear()}">
                         <input type="hidden" name="month" th:value="${comService.getMonth()}">
                         <input type="hidden" name="name" th:value="${comService.getName()}">
-                        <button type="submit">Добавить</button><br>
+                        <button type="submit">Добавить</button>
+                        <br>
                     </form>
 
-                Разница <th:block th:text="${comService.getDelta()}"/><br>
+                    Разница
+                    <th:block th:text="${comService.getDelta()}"/>
+                    <br>
                 </th:block>
-                <th:block th:if="${!comService.isCounter()}">
-                    Площадь <th:block th:text="${comService.getArea()}"/><br>
-                </th:block>
-                Тариф <th:block th:text="${comService.getTariff()}"/><br>
-                Сумма <th:block th:text="${comService.calculCost()}"/><br><br>
+                Площадь
+                <th:block th:if="${!comService.isCounter()}" th:text="${comService.getArea()}"/>
+                <br>
+                Тариф
+                <th:block th:text="${comService.getTariff()}"/>
+                <br>
+                Сумма
+                <th:block th:text="${comService.calculCost()}"/>
+
+                <form method="post" action="delete" name="delete">
+                    <input type="hidden" name="id" th:value="${comService.getId()}">
+                    <button type="submit" name="delete" >Удалить</button>
+                </form>
+                <br><br>
             </div>
         </th:block>
 
