@@ -10,27 +10,30 @@
 <body>
 <div>
     <h2> Main Page </h2>
+
+    <!-- Фильтр -->
     <div>
         <form method="get">
             <select name="filteryear">
                 <option th:each="i : ${#numbers.sequence(2019, 2039)}" th:value="${i}" th:text="${i}"
-                        th:selected="${i==currentYear}"></option>
+                        th:selected="${i==currentYear}"></option><!--заполнение вариантов выпадающего списка через цикл-->
             </select>
             <select name="filtermonth">
                 <option th:each="i : ${#numbers.sequence(0, 11)}" th:value="${monthEnum.values()[i]}" th:text="${monthEnum.values()[i]}"
-                        th:selected="${monthEnum.values()[i]==monthEnum.valueOf(currentMonth)}"></option>
+                        th:selected="${monthEnum.values()[i]==monthEnum.valueOf(currentMonth)}"></option><!--передали объект enum monthEnum и "i" выступает порядковым номером в списке-->
             </select>
             <button type="submit" name="search">Поиск</button>
         </form>
     </div>
     <div>
-
+        <!-- Список элементов -->
         <th:block th:each="comService: ${comServiceList}">
             <div>
                 <th:block th:text="${comService.getYear()}"/><br>
                 <th:block th:text="${comService.getMonth()}"/><br>
                 <th:block th:text="${comService.getName()}"/><br>
                 <th:block th:if="${comService.isCounter()}">
+                    <!-- Форма для показаний -->
                     <form method="post">
                         Начальные показатели<input type="text" name="startIndex" placeholder="0">
                         Последние показатели<input type="text" name="lastIndex" placeholder="0">
@@ -39,6 +42,7 @@
                         <input type="hidden" name="name" th:value="${comService.getName()}">
                         <button type="submit">Добавить</button><br>
                     </form>
+
                 Разница <th:block th:text="${comService.getDelta()}"/><br>
                 </th:block>
                 <th:block th:if="${!comService.isCounter()}">
@@ -49,8 +53,8 @@
             </div>
         </th:block>
 
+        <!-- Форма для перхода на страницу добавления Сервиса (передает год и месяц с фильтра) -->
         <div>
-
             <form method="get" action="/add_service">
                 <input type="hidden" name="year" th:value="${filteryear}">
                 <input type="hidden" name="month" th:value="${filtermonth}">

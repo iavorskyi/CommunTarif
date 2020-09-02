@@ -23,24 +23,22 @@ public class ComService {
     private double area;
 
 
-    public ComService(String name, double tariff, double area, int year, Months month) {
+    public ComService(String name, double tariff, double area) {
         this.name = name;
         this.tariff = tariff;
-        this.year = year;
-        this.month = month;
         this.area = area;
     }
-    public ComService(String name, double tariff, int year, Months month) {
+    public ComService(String name, double tariff) {
         this.name = name;
         this.tariff = tariff;
-        this.year = year;
-        this.month = month;
-        this.area = area;
+
     }
 
 
     public ComService() {
     }
+
+
 
     public Long getId() {
         return id;
@@ -128,12 +126,22 @@ public class ComService {
     }
 
     public double calculCost(){
-        if(isCounter){
+        if(this.isCounter()){
             return delta*tariff;
         }
         else return area*tariff;
     }
     public int calculDelta(){
         return lastIndex-startIndex;
+    }
+    public ComService cloneComService(){
+        ComService comServiceClone;
+        if(this.isCounter()) {
+            comServiceClone = new ComService(this.name, this.tariff);
+        }
+        else{
+            comServiceClone = new ComService(this.name, this.tariff, this.area);
+        }
+        return comServiceClone;
     }
 }

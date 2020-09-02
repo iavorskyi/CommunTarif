@@ -10,6 +10,7 @@ public interface ComServiceRepo extends JpaRepository<ComService, Long> {
     public List<ComService> findAllByYear(int year);
     public List<ComService> findAllByMonth(Months month);
     public List<ComService> findAllByYearAndMonth(int year, Months month);
-    public ComService findByYearAndMonthAndAndName(int year, Months months, String name);
+    public ComService findByYearAndMonthAndName(int year, Months months, String name);
+    ComService findByName(String name);
 
-}
+    }

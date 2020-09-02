@@ -789,7 +789,7 @@ true posixrules
     <database id="2" parent="1" name="communal">
       <ObjectId>19620</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2736</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2788</IntrospectionStateNumber>
       <Current>1</Current>
     </database>
     <database id="3" parent="1" name="dbForHiber">
@@ -859,7 +859,7 @@ true posixrules
       <Comment>standard public schema</Comment>
       <StateNumber>276</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2737</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2789</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="19" parent="2" name="heap">

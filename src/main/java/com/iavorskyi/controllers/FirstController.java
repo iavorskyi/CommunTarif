@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class FirstController {
@@ -37,6 +38,19 @@ public class FirstController {
         }
         else if((filteryear!=null && !filteryear.isEmpty()) && (filtermonth!=null && !filtermonth.isEmpty())){
             comServiceList = comServiceRepo.findAllByYearAndMonth(Integer.parseInt(filteryear), Months.valueOf(filtermonth));
+            if(comServiceList.size()==0){ // если результат фильтрации даст пустой список, то выдается набор дефолтных Сервисов и клонирует их
+                System.out.println("enter in Defoult");
+                comServiceList = comServiceRepo.findAll();
+                comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==0).collect(Collectors.toList());
+                comServiceList.forEach(comService -> {
+                    comService = comService.cloneComService();
+                        });
+                comServiceList.forEach(a->{a.setYear(Integer.parseInt(filteryear));
+                                            a.setMonth(Months.valueOf(filtermonth));
+                                            comServiceRepo.save(a);
+                    System.out.println("Saving Services with year is comlited");
+                });
+            }
         }
         else {
             comServiceList = comServiceRepo.findAllByYearAndMonth(currentYear, Months.valueOf(currentMonth));// если фильтр пустой или не при первом заходе, то берутся значения текущей даты
@@ -56,13 +70,12 @@ public class FirstController {
                              @RequestParam String month,
                              @RequestParam String name){
         if((year!=null && !year.isEmpty()) && (month!=null && !month.isEmpty())) {
-            System.out.println(year);
-            System.out.println(month);
-            System.out.println(startIndex);
-            System.out.println(lastIndex);
-
-            ComService comService = comServiceRepo.findByYearAndMonthAndAndName(Integer.parseInt(year), Months.valueOf(month), name);
-            comService.setStartIndex(Integer.parseInt(startIndex));
+            System.out.println("enter in addIndex");
+            System.out.println(year + " " + month + " " + name);
+            System.out.println(startIndex + "------" + lastIndex);
+            ComService comService = comServiceRepo.findByYearAndMonthAndName(Integer.parseInt(year), Months.valueOf(month), name);
+            System.out.println(comService);
+            comService.setStartIndex(Integer.parseInt(startIndex));//!!!!!!!!!!!!!!!!!!!
             comService.setLastIndex(Integer.parseInt(lastIndex));
             comService.setDelta(comService.calculDelta());
 
@@ -91,23 +104,17 @@ public class FirstController {
         return "addService";
     }
     @PostMapping ("/add_service")
-    public String addService (@RequestParam String yearCur,
-                              @RequestParam String monthCur,
-                              @RequestParam String name,
+    public String addService (@RequestParam String name,
                               @RequestParam(required = false) String counter,
                               @RequestParam String tariff,
                               @RequestParam (required = false) String area){
-
-        Months currentMonth = Months.valueOf(monthCur);
-        System.out.println(counter);
         if(counter!=null && !counter.isEmpty() && counter.contentEquals("yes")){//если выбран счетчик, то поле area - не обязательно
-            ComService comService = new ComService(name, Double.parseDouble(tariff), Integer.parseInt(yearCur), currentMonth);
+            ComService comService = new ComService(name, Double.parseDouble(tariff));
             comService.setCounter(true);
             comServiceRepo.save(comService);
-
         }
         else {
-            ComService comService = new ComService(name, Double.parseDouble(tariff), Double.parseDouble(area), Integer.parseInt(yearCur), currentMonth);
+            ComService comService = new ComService(name, Double.parseDouble(tariff), Double.parseDouble(area));
             comService.setCounter(false);
             comServiceRepo.save(comService);
         }
