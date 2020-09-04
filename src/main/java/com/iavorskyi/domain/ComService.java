@@ -137,7 +137,7 @@ public class ComService {
     public ComService cloneComService(){
         ComService comServiceClone;
         if(this.isCounter()) {
-            comServiceClone = new ComService("Клонированный", this.tariff);
+            comServiceClone = new ComService(this.name, this.tariff);
         }
         else{
             comServiceClone = new ComService(this.name, this.tariff, this.area);
