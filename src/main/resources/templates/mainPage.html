@@ -9,14 +9,29 @@
 
 </head>
 <body>
+<!--Навигационная панель-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/greating">User</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add_service">Добавить сервис</a><!-- Форма для перхода на страницу добавления default Сервиса  -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Профиль</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container mt-4">
-    <div class="container my-5">
-        <h2> Страница расчета коммунальных платежей </h2>
-    </div>
-    <!-- Форма для перхода на страницу добавления default Сервиса  -->
-    <div class="container">
-        <button type="button"><a href="/add_service" id="addService">Добавить сервис</a></button>
-    </div>
     <!-- Фильтр -->
     <div class="container mt-2">
         <form method="get">
@@ -112,7 +127,7 @@
                 <div class="form-group">
                     <input type="hidden" name="year" th:value="${filteryear}">
                     <input type="hidden" name="month" th:value="${filtermonth}">
-                    <input type="hidden" name="notDefoultService" th:value="true">
+                    <input type="hidden" name="notDefaultService" th:value="true">
                     <button class="form-control" type="submit">add service</button>
                 </div>
             </form>

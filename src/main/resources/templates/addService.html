@@ -8,51 +8,123 @@
     <title>Add Service</title>
 </head>
 <body>
+<!--Навигационная панель-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/greating">User</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add_service">Добавить сервис</a>
+                <!-- Форма для перхода на страницу добавления default Сервиса  -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Профиль</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container mt-4">
+    <!--Заголовок (с датой)-->
     <div class="container mb-4">
         <h2>
             <th:block th:if="${isMonthNotNull&&isYearNotNull}" th:text="${month}+' '+${year}"/>
-            <th:block th:if="${!isMonthNotNull&&!isYearNotNull}"> Добавить форму для нового коммунального сервиса</th:block>
+            <th:block th:if="${!isMonthNotNull&&!isYearNotNull}"> Добавить форму для нового коммунального сервиса
+            </th:block>
         </h2>
     </div>
-    <div class="container">
-        <form method="post" name="addService">
-            <div class="form-group m-2">
-                <label class="col-sm-3">
-                    <input class="form-control col-sm-16" type="text" name="name"
-                           placeholder="введите название сервиса">
-                </label>
-                <div class="form-check">
-                    <label class="form-check-label col-sm-3" for="counter">
-                        <input class="form-check-input col-sm-16" type="radio" name="counter" value="yes" id="counter">Оплата по счетчику
-                    </label>
-                    <label class="form-check-label col-sm-3" for="noCounter">
-                        <input class="form-check-input col-sm-16" type="radio" name="counter" value="no" id="noCounter">Оплата за площадь м2
-                    </label>
+    <!--Список дефолтных сервисов-->
+    <div class="card-columns">
+        <th:block th:each="comService: ${listOfDefaultServices}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <th:block th:text="${comService.getName()}"/>
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <th:block th:text="${comService.getTariff()}"/>
+                        </li>
+                        <li class="list-group-item" th:if="${comService.isCounter()}">По счетчику</li>
+                        <li class="list-group-item" th:if="${!comService.isCounter()}">Оплата за м2</li>
+                        <li class="list-group-item" th:if="${!comService.isCounter()}">
+                            <th:block th:text="${comService.getArea()}"/>
+                        </li>
+                    </ul>
+                    <!-- Удаление сервиса по ID -->
+                    <form method="post" action="/add_service/delete" name="delete">
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" name="id"
+                                   th:value="${comService.getId()}">
+                            <button class="btn btn-primary" type="submit" name="delete">Удалить</button>
+                        </div>
+                    </form>
                 </div>
-                <label class="col-form-label col-sm-3">
-                    <input class="form-control col-sm-16" type="text" name="tariff" placeholder="введите тариф">
-                </label>
-                <label class="col-form-label col-sm-3">
-                    <input class="form-control col-sm-16" type="text" name="area" placeholder="если оплата за м2">
-                </label>
-                <label class="col-form-label col-sm-3">
-                    <input class="form-control col-sm-16" type="hidden" name="notDefaultService" th:value="${notDefaultService}">
-                </label>
-
-                <button class="btn btn-primary" type="submit">Добавить</button>
             </div>
-        </form>
+        </th:block>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
+        <!--Форма добавления сервиса-->
+        <a class="btn btn-primary" data-toggle="collapse" href="#add-service" role="button"
+           aria-expanded="false" aria-controls="collapseExample">
+            Добавить сервис
+        </a>
+        <div class="collapse" id="add-service">
+                <form method="post" name="add-Service">
+                    <div class="form-group m-2">
+                        <label class="col-sm-3">
+                            <input class="form-control col-sm-16" type="text" name="name"
+                                   placeholder="введите название сервиса">
+                        </label>
+                        <div class="form-check">
+                            <label class="form-check-label col-sm-3" for="counter">
+                                <input class="form-check-input col-sm-16" type="radio" name="counter" value="yes"
+                                       id="counter">Оплата по счетчику
+                            </label>
+                            <label class="form-check-label col-sm-3" for="noCounter">
+                                <input class="form-check-input col-sm-16" type="radio" name="counter" value="no"
+                                       id="noCounter">Оплата за площадь м2
+                            </label>
+                        </div>
+                        <label class="col-form-label col-sm-3">
+                            <input class="form-control col-sm-16" type="text" name="tariff" placeholder="введите тариф">
+                        </label>
+                        <label class="col-form-label col-sm-3">
+                            <input class="form-control col-sm-16" type="text" name="area"
+                                   placeholder="если оплата за м2">
+                        </label>
+                        <label class="col-form-label col-sm-3">
+                            <input class="form-control col-sm-16" type="hidden" name="notDefaultService"
+                                   th:value="${notDefaultService}">
+                        </label>
+                        <label class="col-form-label col-sm-3">
+                            <input class="form-control col-sm-16" type="hidden" name="filteryear"
+                                   th:value="${year}">
+                        </label>
+                        <label class="col-form-label col-sm-3">
+                            <input class="form-control col-sm-16" type="hidden" name="filtermonth"
+                                   th:value="${month}">
+                        </label>
+                        <button class="btn btn-primary" type="submit">Добавить</button>
+                    </div>
+                </form>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
 </body>
 </html>
