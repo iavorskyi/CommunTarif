@@ -2,6 +2,7 @@ package com.iavorskyi.controllers;
 
 import com.iavorskyi.domain.ComService;
 import com.iavorskyi.domain.Months;
+import com.iavorskyi.domain.User;
 import com.iavorskyi.repos.ComServiceRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,21 +25,21 @@ public class FirstController {
     }
 
 
-    @GetMapping("/")
-    public String showList(@RequestParam(required = false) String filteryear,
-                           @RequestParam(required = false) String filtermonth, Model model) {
+    @GetMapping("/main")
+    public String showList(@RequestParam(required = false) Integer filteryear,
+                           @RequestParam(required = false) Months filtermonth, Model model, User user) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
         String currentMonth = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);
         List<ComService> comServiceList;
 
-        if ((filteryear != null && !filteryear.isEmpty()) && (filtermonth == null || filtermonth.isEmpty())) {
-            comServiceList = comServiceRepo.findAllByYear(Integer.parseInt(filteryear));
-        } else if ((filteryear == null || filteryear.isEmpty()) && (filtermonth != null && !filtermonth.isEmpty())) {
-            comServiceList = comServiceRepo.findAllByMonth(Months.valueOf(filtermonth));
-        } else if (filteryear != null && !filteryear.isEmpty()) {
-            comServiceList = comServiceRepo.findAllByYearAndMonth(Integer.parseInt(filteryear), Months.valueOf(filtermonth));
+        if (filteryear != null && filtermonth == null) {
+            comServiceList = comServiceRepo.findAllByYear(filteryear);
+        } else if (filteryear == null && filtermonth != null ) {
+            comServiceList = comServiceRepo.findAllByMonth(filtermonth);
+        } else if (filteryear != null) {
+            comServiceList = comServiceRepo.findAllByYearAndMonth(filteryear, filtermonth);
         } else {
             comServiceList = comServiceRepo.findAllByYearAndMonth(currentYear, Months.valueOf(currentMonth));// если фильтр пустой или не при первом заходе, то берутся значения текущей даты
         }
@@ -49,9 +50,9 @@ public class FirstController {
                 comServiceRepo.save(comService.cloneComService());
             });
             comServiceList.forEach(a -> {
-                if (filteryear != null && !filteryear.isEmpty()) a.setYear(Integer.parseInt(filteryear));
+                if (filteryear != null ) a.setYear(filteryear);
                 else a.setYear(Integer.parseInt(String.valueOf(currentYear)));
-                if (filtermonth != null && !filtermonth.isEmpty()) a.setMonth(Months.valueOf(filtermonth));
+                if (filtermonth != null) a.setMonth(filtermonth);
                 else a.setMonth(Months.valueOf(currentMonth));
                 comServiceRepo.save(a);
             });
@@ -62,10 +63,11 @@ public class FirstController {
         model.addAttribute("currentYear", currentYear);
         model.addAttribute("currentMonth", currentMonth);
         model.addAttribute("monthEnum", Months.JANUARY);
+        model.addAttribute("user", user);
         return "mainPage";
     }
 
-    @PostMapping("/")
+    @PostMapping("/main")
     public String addIndexes(@RequestParam String startIndex,
                              @RequestParam String lastIndex,
                              @RequestParam Long id) {
@@ -76,7 +78,7 @@ public class FirstController {
             comService.setDelta(comService.calculDelta());
             comServiceRepo.save(comService);
         }
-        return "redirect:/";
+        return "redirect:/main";
     }
 
     @PostMapping("/delete")
@@ -87,29 +89,30 @@ public class FirstController {
 
 
     @GetMapping("/add_service")
-    public String addService(@RequestParam(required = false) String year,
-                             @RequestParam(required = false) String month,
+    public String addService(@RequestParam(required = false) Integer year,
+                             @RequestParam(required = false) Months month,
                              @RequestParam(required = false) boolean notDefaultService,
-                             Model model) {
+                             Model model, User user) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         boolean isYearNotNull = true;
         boolean isMonthNotNull = true;
         List<ComService> listOfDefaultServices = comServiceRepo.findAll().stream().filter(comService -> comService.getYear()==0).collect(Collectors.toList());
-        if (year == null || year.isEmpty()) {//если год в фильтре на главной странице пустой
+        if (year == null) {//если год в фильтре на главной странице пустой
             isYearNotNull = false;
-            year = String.valueOf(calendar.get(Calendar.YEAR));//передает текущий год
+            year = calendar.get(Calendar.YEAR);//передает текущий год
         }
-        if (month == null || month.isEmpty()) {//если месяц в фильтре на главной странице пустой
+        if (month == null) {//если месяц в фильтре на главной странице пустой
             isMonthNotNull = false;
-            month = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);//передает текущий месяц(взят порядковый элемент энама)
+            month = (Months.values()[calendar.get(Calendar.MONTH)]);//передает текущий месяц(взят порядковый элемент энама)
         }
-        model.addAttribute("year", Integer.parseInt(year));
+        model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("notDefaultService", notDefaultService);
         model.addAttribute("listOfDefaultServices", listOfDefaultServices);
         model.addAttribute("isYearNotNull", isYearNotNull);
         model.addAttribute("isMonthNotNull", isMonthNotNull);
+        model.addAttribute("user", user);
 
         return "addService";
     }
@@ -117,36 +120,34 @@ public class FirstController {
     @PostMapping("/add_service")
     public String addService(@RequestParam String name,
                              @RequestParam(required = false) String counter,
-                             @RequestParam String tariff,
-                             @RequestParam(required = false) String area,
-                             @RequestParam(required = false) String filteryear,
-                             @RequestParam(required = false) String filtermonth,
+                             @RequestParam Double tariff,
+                             @RequestParam(required = false) Double area,
+                             @RequestParam(required = false) Integer filteryear,
+                             @RequestParam(required = false) Months filtermonth,
                              @RequestParam(required = false) boolean notDefaultService) { //передает true, если добавляет пустую форму для нового сервиса
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
-        if (filteryear == null || filteryear.isEmpty()) {//если год в фильтре на главной странице пустой
-            filteryear = String.valueOf(calendar.get(Calendar.YEAR));//передает текущий год
+        if (filteryear == null) {//если год в фильтре на главной странице пустой
+            filteryear = calendar.get(Calendar.YEAR);//передает текущий год
         }
-        if (filtermonth == null || filtermonth.isEmpty()) {//если месяц в фильтре на главной странице пустой
-            filtermonth = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);//передает текущий месяц(взят порядковый элемент энама)
+        if (filtermonth == null) {//если месяц в фильтре на главной странице пустой
+            filtermonth = Months.values()[calendar.get(Calendar.MONTH)];//передает текущий месяц(взят порядковый элемент энама)
         }
-        System.out.println("Notdefault" + notDefaultService);
-
-        if (counter != null && !counter.isEmpty() && counter.contentEquals("yes")) {//если выбран счетчик, то поле area - не обязательно
-            ComService comService = new ComService(name, Double.parseDouble(tariff));
+        if (counter != null && counter.contentEquals("yes")) {//если выбран счетчик, то поле area - не обязательно
+            ComService comService = new ComService(name, tariff);
             if (notDefaultService) {
-                comService.setYear(Integer.parseInt(filteryear));
-                comService.setMonth(Months.valueOf(filtermonth));
+                comService.setYear(filteryear);
+                comService.setMonth(filtermonth);
             }
             comService.setCounter(true);
             comServiceRepo.save(comService);
         } else {
-            ComService comService = new ComService(name, Double.parseDouble(tariff), Double.parseDouble(area));
+            ComService comService = new ComService(name, tariff, area);
             if (notDefaultService) {
-                comService.setYear(Integer.parseInt(filteryear));
+                comService.setYear(filteryear);
             }
             if (notDefaultService) {
-                comService.setMonth(Months.valueOf(filtermonth));
+                comService.setMonth(filtermonth);
             }
             comService.setCounter(false);
             comServiceRepo.save(comService);
@@ -160,8 +161,9 @@ public class FirstController {
         return "redirect:/add_service";
     }
 
-    @GetMapping("/greating")
-    public String greating() {
+    @GetMapping("/")
+    public String greating(User user, Model model) {
+        model.addAttribute("user", user);
         return "/greating";
     }
 

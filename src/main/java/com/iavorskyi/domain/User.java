@@ -1,7 +1,7 @@
 package com.iavorskyi.domain;
 
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,11 +11,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-public class User   {
+public class User  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "Имя пользователя не может быть пустым")
+    @NotBlank (message = "Имя пользователя не может быть пустым")
     private String username;
     @NotBlank (message = "Пароль пользователя не может быть пустым")
     private String password;
@@ -30,6 +30,7 @@ public class User   {
     private Set<Role> roles;
 
     public boolean isAdmin(){
+        System.out.println(this.getUsername() + " " + this.getRoles());
         return roles.contains(Role.ADMIN);
     }
 
@@ -45,35 +46,35 @@ public class User   {
         return username;
     }
 
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return isActive();
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return getRoles();
-//    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
 
     public String getPassword() {
         return password;
