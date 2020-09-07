@@ -6,7 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,19 +17,19 @@ public class User  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank (message = "Имя пользователя не может быть пустым")
     private String username;
-    @NotBlank (message = "Пароль пользователя не может быть пустым")
     private String password;
     private boolean active;
-    @Email(message = "Email не коректен")
     private String email;
-    private String activationCode;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "usr_serv")
+    private List<ComService> comServiceList = new ArrayList<>();
 
     public boolean isAdmin(){
         System.out.println(this.getUsername() + " " + this.getRoles());
@@ -100,19 +102,19 @@ public class User  implements UserDetails {
         this.roles = roles;
     }
 
-    public String getMail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setMail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getActivationCode() {
-        return activationCode;
+    public List<ComService> getComServiceList() {
+        return comServiceList;
     }
 
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
+    public void setComServiceList(List<ComService> comServiceList) {
+        this.comServiceList = comServiceList;
     }
 }

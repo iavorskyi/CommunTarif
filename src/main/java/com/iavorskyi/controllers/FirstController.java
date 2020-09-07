@@ -4,6 +4,8 @@ import com.iavorskyi.domain.ComService;
 import com.iavorskyi.domain.Months;
 import com.iavorskyi.domain.User;
 import com.iavorskyi.repos.ComServiceRepo;
+import com.iavorskyi.repos.UserRepo;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,42 +21,49 @@ import java.util.stream.Collectors;
 @Controller
 public class FirstController {
     private final ComServiceRepo comServiceRepo;// конструкция вместо @Autowired
-
-    public FirstController(ComServiceRepo comServiceRepo) {
+    private final UserRepo userRepo;
+    public FirstController(ComServiceRepo comServiceRepo, UserRepo userRepo) {
         this.comServiceRepo = comServiceRepo;
+        this.userRepo = userRepo;
     }
+
 
 
     @GetMapping("/main")
     public String showList(@RequestParam(required = false) Integer filteryear,
-                           @RequestParam(required = false) Months filtermonth, Model model, User user) {
+                           @RequestParam(required = false) Months filtermonth,
+                           Model model,
+                           @AuthenticationPrincipal User user) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
         String currentMonth = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);
-        List<ComService> comServiceList;
+        List<ComService> comServiceList = user.getComServiceList();
 
         if (filteryear != null && filtermonth == null) {
-            comServiceList = comServiceRepo.findAllByYear(filteryear);
+            comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==filteryear).collect(Collectors.toList());
         } else if (filteryear == null && filtermonth != null ) {
-            comServiceList = comServiceRepo.findAllByMonth(filtermonth);
+            comServiceList = comServiceList.stream().filter(comService -> comService.getMonth()==filtermonth).collect(Collectors.toList());
         } else if (filteryear != null) {
-            comServiceList = comServiceRepo.findAllByYearAndMonth(filteryear, filtermonth);
+            comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==filteryear&&comService.getMonth()==filtermonth).collect(Collectors.toList());
         } else {
-            comServiceList = comServiceRepo.findAllByYearAndMonth(currentYear, Months.valueOf(currentMonth));// если фильтр пустой или не при первом заходе, то берутся значения текущей даты
+            comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==currentYear&&comService.getMonth()==Months.valueOf(currentMonth)).collect(Collectors.toList());
         }
         if (comServiceList.size() == 0) { // если результат фильтрации даст пустой список, то выдается набор дефолтных Сервисов и клонирует их
-            comServiceList = comServiceRepo.findAll();
+            comServiceList = user.getComServiceList();
             comServiceList = comServiceList.stream().filter(comService -> comService.getYear() == 0).collect(Collectors.toList());
             comServiceList.forEach(comService -> {
-                comServiceRepo.save(comService.cloneComService());
+                ComService comServiceClone = comService.cloneComService();
+                comServiceRepo.save(comServiceClone);
+                user.getComServiceList().add(comServiceClone);
+                userRepo.save(user);
             });
-            comServiceList.forEach(a -> {
-                if (filteryear != null ) a.setYear(filteryear);
-                else a.setYear(Integer.parseInt(String.valueOf(currentYear)));
-                if (filtermonth != null) a.setMonth(filtermonth);
-                else a.setMonth(Months.valueOf(currentMonth));
-                comServiceRepo.save(a);
+            comServiceList.forEach(comService -> {
+                if (filteryear != null ) comService.setYear(filteryear);
+                else comService.setYear(Integer.parseInt(String.valueOf(currentYear)));
+                if (filtermonth != null) comService.setMonth(filtermonth);
+                else comService.setMonth(Months.valueOf(currentMonth));
+                comServiceRepo.save(comService);
             });
         }
         model.addAttribute("comServiceList", comServiceList);
@@ -82,8 +91,11 @@ public class FirstController {
     }
 
     @PostMapping("/delete")
-    public String deleteService(@RequestParam Long id) {
+    public String deleteService(@RequestParam Long id,
+                                @AuthenticationPrincipal User user) {
+        user.getComServiceList().remove(comServiceRepo.findOneById(id));// удаляем из списка сервисов пользователя
         comServiceRepo.deleteById(id);
+        userRepo.save(user);
         return "redirect:/";
     }
 
@@ -92,12 +104,13 @@ public class FirstController {
     public String addService(@RequestParam(required = false) Integer year,
                              @RequestParam(required = false) Months month,
                              @RequestParam(required = false) boolean notDefaultService,
-                             Model model, User user) {
+                             Model model,
+                             @AuthenticationPrincipal User user) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         boolean isYearNotNull = true;
         boolean isMonthNotNull = true;
-        List<ComService> listOfDefaultServices = comServiceRepo.findAll().stream().filter(comService -> comService.getYear()==0).collect(Collectors.toList());
+          List<ComService> listOfDefaultServices = user.getComServiceList().stream().filter(comService -> comService.getYear()==0).collect(Collectors.toList());
         if (year == null) {//если год в фильтре на главной странице пустой
             isYearNotNull = false;
             year = calendar.get(Calendar.YEAR);//передает текущий год
@@ -118,7 +131,8 @@ public class FirstController {
     }
 
     @PostMapping("/add_service")
-    public String addService(@RequestParam String name,
+    public String addService(@AuthenticationPrincipal User user,
+                             @RequestParam String name,
                              @RequestParam(required = false) String counter,
                              @RequestParam Double tariff,
                              @RequestParam(required = false) Double area,
@@ -141,6 +155,8 @@ public class FirstController {
             }
             comService.setCounter(true);
             comServiceRepo.save(comService);
+            user.getComServiceList().add(comService);
+            userRepo.save(user);
         } else {
             ComService comService = new ComService(name, tariff, area);
             if (notDefaultService) {
@@ -151,18 +167,24 @@ public class FirstController {
             }
             comService.setCounter(false);
             comServiceRepo.save(comService);
+            user.getComServiceList().add(comService);
+            userRepo.save(user);
         }
+
         return "redirect:/add_service";
     }
     @PostMapping("add_service/delete")
-    public String deleteDefaultService(@RequestParam Long id) {
-        System.out.println("delete");
+    public String deleteDefaultService(@RequestParam Long id,
+                                       @AuthenticationPrincipal User user) {
+        user.getComServiceList().remove(comServiceRepo.findOneById(id));// удаляем из списка сервисов пользователя
         comServiceRepo.deleteById(id);
+        userRepo.save(user);
         return "redirect:/add_service";
     }
 
     @GetMapping("/")
-    public String greating(User user, Model model) {
+    public String greating(@AuthenticationPrincipal User user,
+                           Model model) {
         model.addAttribute("user", user);
         return "/greating";
     }

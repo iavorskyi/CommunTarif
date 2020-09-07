@@ -3,6 +3,7 @@ package com.iavorskyi.controllers;
 import com.iavorskyi.domain.Role;
 import com.iavorskyi.domain.User;
 import com.iavorskyi.repos.UserRepo;
+import com.iavorskyi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import java.util.Collections;
 
 @Controller
 public class RegistrationController {
+    @Autowired
+    UserService userService;
     @Autowired
     UserRepo userRepo;
 
@@ -31,7 +34,7 @@ public class RegistrationController {
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
             System.out.println(user.getUsername());
-            userRepo.save(user);
+            userService.addUser(user);
             System.out.println("User is saved");
 
         }

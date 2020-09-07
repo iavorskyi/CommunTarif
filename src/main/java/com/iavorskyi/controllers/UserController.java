@@ -3,6 +3,7 @@ package com.iavorskyi.controllers;
 import com.iavorskyi.domain.Role;
 import com.iavorskyi.domain.User;
 import com.iavorskyi.repos.UserRepo;
+import com.iavorskyi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
-    UserRepo userRepo;
+    UserService userService;
 
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("userList", userRepo.findAll());
+        model.addAttribute("userList", userService.findAll());
         return "userList";
     }
 
@@ -48,7 +49,7 @@ public class UserController {
             user.getRoles().add(Role.valueOf(key));
         }
         });
-        userRepo.save(user);
+        userService.addUser(user);
         return "redirect:/user";
     }
 }
