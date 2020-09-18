@@ -6,6 +6,7 @@ import com.iavorskyi.repos.UserRepo;
 import com.iavorskyi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,9 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public String userList(Model model){
+    public String userList(Model model, @AuthenticationPrincipal User user){
         model.addAttribute("userList", userService.findAll());
+        model.addAttribute("user", user);
         return "userList";
     }
 
@@ -49,7 +51,7 @@ public class UserController {
             user.getRoles().add(Role.valueOf(key));
         }
         });
-        userService.addUser(user);
+        userService.saveUser(username, form, user);
         return "redirect:/user";
     }
 }

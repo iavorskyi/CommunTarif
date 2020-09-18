@@ -27,12 +27,10 @@ public class User  implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "usr_serv")
-    private List<ComService> comServiceList = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "curUser", orphanRemoval = true, cascade = CascadeType.REFRESH)
+    private List<ComService> comServiceList;
 
     public boolean isAdmin(){
-        System.out.println(this.getUsername() + " " + this.getRoles());
         return roles.contains(Role.ADMIN);
     }
 

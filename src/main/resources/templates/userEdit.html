@@ -13,7 +13,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">User</a>
+    <a class="navbar-brand" href="/"><th:block th:text="ComAssist"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -24,16 +24,22 @@
                 <a class="nav-link" href="/main">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/add_service">Добавить сервис</a>
+                <a class="nav-link" href="/add_service">Добавить шаблон</a>
                 <!-- Форма для перхода на страницу добавления default Сервиса  -->
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Профиль</a>
+                <a class="nav-link" href="/tariff">Тарифы</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:if="${user.isAdmin()}">
                 <a class="nav-link" href="/user">Пользователи</a>
             </li>
         </ul>
+    </div>
+    <div class="navbar-text"><span th:text="${user.getUsername()}"></span></div>
+    <div class="col-sm-3 ml-1">
+        <form th:action="@{/logout}" method="post">
+            <input th:if="${user!=null}" type="submit" class="btn btn-primary" value="Выйти"/>
+        </form>
     </div>
 </nav>
 

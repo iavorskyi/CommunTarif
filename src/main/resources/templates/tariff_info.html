@@ -34,7 +34,7 @@
             </li>
         </ul>
     </div>
-    <div class="navbar-text" th:if="${user!=null}"><span th:text="${user.getUsername()}"></span></div>
+    <div class="navbar-text"><span th:text="${user.getUsername()}"></span></div>
     <div class="col-sm-3 ml-1">
         <form th:action="@{/logout}" method="post">
             <input th:if="${user!=null}" type="submit" class="btn btn-primary" value="Выйти"/>
@@ -42,12 +42,30 @@
     </div>
 </nav>
 
-<div class="container mt-4">
-    <h4>Добро пожаловать на сервис по контролю Коммунальных услуг!</h4>
-    <p>Он поможет Вам следить за расходами и потреблением ресурсов</p>
-    <div>
-        <a th:if="${user==null}"  type="button" href="/login" class="btn btn-primary">Войти</a>
-        <a th:if="${user==null}"  type="button" href="/registration" class="btn btn-primary">Регистрация</a>
+<div class="container">
+    <a class="btn btn-secondary mb-2" data-toggle="collapse" href="#electro" role="button" width="15"
+       aria-expanded="false" aria-controls="collapseExample">
+        Тарифы на электроэнергию
+    </a>
+    <div class="collapse" id="electro">
+<th:block th:utext="${parsingObjElectro.getTableElements().get(0)}"/>
+    </div>
+
+    <a class="btn btn-secondary mb-2" data-toggle="collapse" href="#voda" role="button" width="15"
+       aria-expanded="false" aria-controls="collapseExample">
+        Тарифы на воду
+    </a>
+    <div class="collapse" id="voda">
+        <th:block th:utext="${parsingObjVoda.getTableElements().get(0)}"/>
+    </div>
+
+
+    <a class="btn btn-secondary mb-2" data-toggle="collapse" href="#gaz" role="button" width="15"
+       aria-expanded="false" aria-controls="collapseExample">
+        Тарифы на газ
+    </a>
+    <div class="collapse" id="gaz">
+        <th:block th:utext="${parsingObjGaz.getTableElements().get(0)}"/>
     </div>
 </div>
 

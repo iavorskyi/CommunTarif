@@ -38,7 +38,12 @@ public class FirstController {
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
         String currentMonth = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);
+        System.out.println("List of Service-Id");
+        user.getComServiceList().forEach(s-> System.out.println(s.getId() + s.toString()));
+        System.out.println("-------------------------");
+
         List<ComService> comServiceList = user.getComServiceList();
+
 
         if (filteryear != null && filtermonth == null) {
             comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==filteryear).collect(Collectors.toList());
@@ -56,7 +61,8 @@ public class FirstController {
                 ComService comServiceClone = comService.cloneComService();
                 comServiceRepo.save(comServiceClone);
                 user.getComServiceList().add(comServiceClone);
-                userRepo.save(user);
+                System.out.println("Clone is added to List " + comServiceClone);
+
             });
             comServiceList.forEach(comService -> {
                 if (filteryear != null ) comService.setYear(filteryear);
@@ -64,6 +70,11 @@ public class FirstController {
                 if (filtermonth != null) comService.setMonth(filtermonth);
                 else comService.setMonth(Months.valueOf(currentMonth));
                 comServiceRepo.save(comService);
+                System.out.println("List of users " + userRepo.findAll());
+                System.out.println("Current user " + user.toString());
+                User currentUserInDb = userRepo.findByUsername(user.getUsername());
+                System.out.println("Current user " + currentUserInDb.toString());
+                userRepo.save(currentUserInDb);
             });
         }
         model.addAttribute("comServiceList", comServiceList);
@@ -79,9 +90,13 @@ public class FirstController {
     @PostMapping("/main")
     public String addIndexes(@RequestParam String startIndex,
                              @RequestParam String lastIndex,
-                             @RequestParam Long id) {
+                             @RequestParam long id,
+                             @AuthenticationPrincipal User user) {
         if ((id != 0)) {
-            ComService comService = comServiceRepo.findOneById(id);
+            ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);
+            comServiceRepo.findAll().forEach(s-> System.out.println(s.toString()));
+            System.out.println("Srvice to update - " + comService.toString());
+//            ComService comService = comServiceRepo.findOneById(id);
             comService.setStartIndex(Integer.parseInt(startIndex));
             comService.setLastIndex(Integer.parseInt(lastIndex));
             comService.setDelta(comService.calculDelta());
@@ -91,12 +106,21 @@ public class FirstController {
     }
 
     @PostMapping("/delete")
-    public String deleteService(@RequestParam Long id,
+    public String deleteService(@RequestParam long id,
                                 @AuthenticationPrincipal User user) {
-        user.getComServiceList().remove(comServiceRepo.findOneById(id));// удаляем из списка сервисов пользователя
-        comServiceRepo.deleteById(id);
-        userRepo.save(user);
-        return "redirect:/";
+        ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);// ищем соответствующий Сервис в List пользователя
+
+        user.getComServiceList().remove(comService);// удаляем из списка сервисов пользователя
+        User currentUserInDb = userRepo.findByUsername(user.getUsername());// находим текущего User в DB
+
+
+        userRepo.save(currentUserInDb); // сохраняем текущего пользователя из DB
+
+        ComService comServiceDB = comServiceRepo.findOneById(comService.getId());
+
+        comServiceRepo.delete(comServiceDB); // удаляем из базы данных
+
+        return "redirect:/main";
     }
 
 
@@ -154,9 +178,11 @@ public class FirstController {
                 comService.setMonth(filtermonth);
             }
             comService.setCounter(true);
+            comService.setCurUser(user);
             comServiceRepo.save(comService);
             user.getComServiceList().add(comService);
-            userRepo.save(user);
+            User currentUserDB = userRepo.findByUsername(user.getUsername());
+            userRepo.save(currentUserDB);
         } else {
             ComService comService = new ComService(name, tariff, area);
             if (notDefaultService) {
@@ -166,19 +192,23 @@ public class FirstController {
                 comService.setMonth(filtermonth);
             }
             comService.setCounter(false);
+            comService.setCurUser(user);
             comServiceRepo.save(comService);
             user.getComServiceList().add(comService);
-            userRepo.save(user);
+            User currentUserDB = userRepo.findByUsername(user.getUsername());
+            userRepo.save(currentUserDB);
         }
 
         return "redirect:/add_service";
     }
     @PostMapping("add_service/delete")
-    public String deleteDefaultService(@RequestParam Long id,
+    public String deleteDefaultService(@RequestParam long id,
                                        @AuthenticationPrincipal User user) {
-        user.getComServiceList().remove(comServiceRepo.findOneById(id));// удаляем из списка сервисов пользователя
-        comServiceRepo.deleteById(id);
-        userRepo.save(user);
+        ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);
+        user.getComServiceList().remove(comService);// удаляем из списка сервисов пользователя
+        User currentUserDb = userRepo.findByUsername(user.getUsername());// находим текущего User в DB
+        userRepo.save(currentUserDb); // сохраняем текущего пользователя из DB
+        comServiceRepo.delete(comService); // удаляем его из базы данных
         return "redirect:/add_service";
     }
 

@@ -18,6 +18,10 @@ public class ComService {
     private Months month;
     private boolean isCounter;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn
+    private User curUser;
+
 
 
     private double area;
@@ -125,6 +129,14 @@ public class ComService {
         isCounter = counter;
     }
 
+    public User getCurUser() {
+        return curUser;
+    }
+
+    public void setCurUser(User curUser) {
+        this.curUser = curUser;
+    }
+
     public double calculCost(){
         if(this.isCounter()){
             return delta*tariff;
@@ -138,10 +150,11 @@ public class ComService {
         ComService comServiceClone;
         if(this.isCounter()) {
             comServiceClone = new ComService(this.name, this.tariff);
+            comServiceClone.setCurUser(curUser);
         }
         else{
             comServiceClone = new ComService(this.name, this.tariff, this.area);
-
+            comServiceClone.setCurUser(curUser);
         }
         return comServiceClone;
     }
