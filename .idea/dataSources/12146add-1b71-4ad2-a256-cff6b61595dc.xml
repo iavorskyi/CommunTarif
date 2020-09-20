@@ -937,6 +937,7 @@ true posixrules
     </sequence>
     <table id="32" parent="18" name="com_service">
       <ObjectId>44254</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>postgres</Owner>
       <StateNumber>4463</StateNumber>
     </table>
