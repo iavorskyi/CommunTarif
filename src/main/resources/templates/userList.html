@@ -33,7 +33,7 @@
                     <th:block th:each="role : ${user.getRoles()}"
                               th:utext="${role} + ' '"/>
                 </td>
-                <td><a th:href="'/user/' + ${user.getId()}">edit</a></td>
+                <td><a th:href="@{/user/{id}(id=${user.getId()})}">edit</a></td>
             </tr>
         </table>
     </div>

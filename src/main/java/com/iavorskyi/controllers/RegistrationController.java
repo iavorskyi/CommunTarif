@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
@@ -20,23 +21,19 @@ public class RegistrationController {
     UserRepo userRepo;
 
     @GetMapping("/registration")
-    public String registration(){
+    public String registration(@ModelAttribute User user){
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model){
-        System.out.println(user);
+    public String addUser(@ModelAttribute User user, Model model){
         User userFromDB = userRepo.findByUsername(user.getUsername());
         if(userFromDB!=null){
             model.addAttribute("message", "Пользователь уже существует!");
         } else{
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
-            System.out.println(user.getUsername());
             userService.addUser(user);
-            System.out.println("User is saved");
-
         }
 
         return "redirect:login";

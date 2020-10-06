@@ -5,6 +5,8 @@ import com.iavorskyi.domain.Months;
 import com.iavorskyi.domain.User;
 import com.iavorskyi.repos.ComServiceRepo;
 import com.iavorskyi.repos.UserRepo;
+import com.iavorskyi.service.ComServService;
+import com.iavorskyi.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +22,13 @@ import java.util.stream.Collectors;
 
 @Controller
 public class FirstController {
-    private final ComServiceRepo comServiceRepo;// конструкция вместо @Autowired
-    private final UserRepo userRepo;
-    public FirstController(ComServiceRepo comServiceRepo, UserRepo userRepo) {
-        this.comServiceRepo = comServiceRepo;
-        this.userRepo = userRepo;
+
+    private final UserService userService;
+    private final ComServService comServService;
+    public FirstController(UserService userService, ComServService comServService) {
+        this.userService = userService;
+        this.comServService = comServService; // конструкция вместо @Autowired
     }
-
-
 
     @GetMapping("/main")
     public String showList(@RequestParam(required = false) Integer filteryear,
@@ -38,12 +39,8 @@ public class FirstController {
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
         String currentMonth = String.valueOf(Months.values()[calendar.get(Calendar.MONTH)]);
-        System.out.println("List of Service-Id");
-        user.getComServiceList().forEach(s-> System.out.println(s.getId() + s.toString()));
-        System.out.println("-------------------------");
 
         List<ComService> comServiceList = user.getComServiceList();
-
 
         if (filteryear != null && filtermonth == null) {
             comServiceList = comServiceList.stream().filter(comService -> comService.getYear()==filteryear).collect(Collectors.toList());
@@ -58,10 +55,9 @@ public class FirstController {
             comServiceList = user.getComServiceList();
             comServiceList = comServiceList.stream().filter(comService -> comService.getYear() == 0).collect(Collectors.toList());
             comServiceList.forEach(comService -> {
-                ComService comServiceClone = comService.cloneComService();
-                comServiceRepo.save(comServiceClone);
+                ComService comServiceClone = comServService.cloneComService(comService);
+                comServService.save(comServiceClone);
                 user.getComServiceList().add(comServiceClone);
-                System.out.println("Clone is added to List " + comServiceClone);
 
             });
             comServiceList.forEach(comService -> {
@@ -69,12 +65,9 @@ public class FirstController {
                 else comService.setYear(Integer.parseInt(String.valueOf(currentYear)));
                 if (filtermonth != null) comService.setMonth(filtermonth);
                 else comService.setMonth(Months.valueOf(currentMonth));
-                comServiceRepo.save(comService);
-                System.out.println("List of users " + userRepo.findAll());
-                System.out.println("Current user " + user.toString());
-                User currentUserInDb = userRepo.findByUsername(user.getUsername());
-                System.out.println("Current user " + currentUserInDb.toString());
-                userRepo.save(currentUserInDb);
+                comServService.save(comService);
+                User currentUserInDb = (User) userService.loadUserByUsername(user.getUsername());
+                userService.addUser(currentUserInDb);
             });
         }
         model.addAttribute("comServiceList", comServiceList);
@@ -88,19 +81,17 @@ public class FirstController {
     }
 
     @PostMapping("/main")
-    public String addIndexes(@RequestParam String startIndex,
-                             @RequestParam String lastIndex,
+    public String addIndexes(@RequestParam Integer startIndex,
+                             @RequestParam Integer lastIndex,
                              @RequestParam long id,
                              @AuthenticationPrincipal User user) {
         if ((id != 0)) {
             ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);
-            comServiceRepo.findAll().forEach(s-> System.out.println(s.toString()));
-            System.out.println("Srvice to update - " + comService.toString());
-//            ComService comService = comServiceRepo.findOneById(id);
-            comService.setStartIndex(Integer.parseInt(startIndex));
-            comService.setLastIndex(Integer.parseInt(lastIndex));
-            comService.setDelta(comService.calculDelta());
-            comServiceRepo.save(comService);
+            comService.setStartIndex(startIndex);
+            comService.setLastIndex(lastIndex);
+            comServService.calculDelta(comService);
+            comServService.calculCost(comService);
+            comServService.save(comService);
         }
         return "redirect:/main";
     }
@@ -111,14 +102,14 @@ public class FirstController {
         ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);// ищем соответствующий Сервис в List пользователя
 
         user.getComServiceList().remove(comService);// удаляем из списка сервисов пользователя
-        User currentUserInDb = userRepo.findByUsername(user.getUsername());// находим текущего User в DB
+        User currentUserInDb = (User) userService.loadUserByUsername(user.getUsername());// находим текущего User в DB
 
 
-        userRepo.save(currentUserInDb); // сохраняем текущего пользователя из DB
+        userService.addUser(currentUserInDb); // сохраняем текущего пользователя из DB
 
-        ComService comServiceDB = comServiceRepo.findOneById(comService.getId());
+        ComService comServiceDB = comServService.findById(comService.getId());
 
-        comServiceRepo.delete(comServiceDB); // удаляем из базы данных
+        comServService.delete(comServiceDB); // удаляем из базы данных
 
         return "redirect:/main";
     }
@@ -179,10 +170,10 @@ public class FirstController {
             }
             comService.setCounter(true);
             comService.setCurUser(user);
-            comServiceRepo.save(comService);
+            comServService.save(comService);
             user.getComServiceList().add(comService);
-            User currentUserDB = userRepo.findByUsername(user.getUsername());
-            userRepo.save(currentUserDB);
+            User currentUserDB = (User) userService.loadUserByUsername(user.getUsername());
+            userService.addUser(currentUserDB);
         } else {
             ComService comService = new ComService(name, tariff, area);
             if (notDefaultService) {
@@ -193,10 +184,11 @@ public class FirstController {
             }
             comService.setCounter(false);
             comService.setCurUser(user);
-            comServiceRepo.save(comService);
+            comServService.calculCost(comService);
+            comServService.save(comService);
             user.getComServiceList().add(comService);
-            User currentUserDB = userRepo.findByUsername(user.getUsername());
-            userRepo.save(currentUserDB);
+            User currentUserDB = (User) userService.loadUserByUsername(user.getUsername());
+            userService.addUser(currentUserDB);
         }
 
         return "redirect:/add_service";
@@ -206,9 +198,9 @@ public class FirstController {
                                        @AuthenticationPrincipal User user) {
         ComService comService = user.getComServiceList().stream().filter(cs -> cs.getId() == id).collect(Collectors.toList()).get(0);
         user.getComServiceList().remove(comService);// удаляем из списка сервисов пользователя
-        User currentUserDb = userRepo.findByUsername(user.getUsername());// находим текущего User в DB
-        userRepo.save(currentUserDb); // сохраняем текущего пользователя из DB
-        comServiceRepo.delete(comService); // удаляем его из базы данных
+        User currentUserDb = (User) userService.loadUserByUsername(user.getUsername());// находим текущего User в DB
+        userService.addUser(currentUserDb); // сохраняем текущего пользователя из DB
+        comServService.delete(comService); // удаляем его из базы данных
         return "redirect:/add_service";
     }
 

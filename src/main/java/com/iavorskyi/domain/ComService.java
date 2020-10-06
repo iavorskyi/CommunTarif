@@ -17,16 +17,14 @@ public class ComService {
     private int year;
     private Months month;
     private boolean isCounter;
+    private double area;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User curUser;
 
-
-
-    private double area;
-
-
+    public ComService() {
+    }
     public ComService(String name, double tariff, double area) {
         this.name = name;
         this.tariff = tariff;
@@ -37,12 +35,6 @@ public class ComService {
         this.tariff = tariff;
 
     }
-
-
-    public ComService() {
-    }
-
-
 
     public Long getId() {
         return id;
@@ -137,26 +129,5 @@ public class ComService {
         this.curUser = curUser;
     }
 
-    public double calculCost(){
-        if(this.isCounter()){
-            return delta*tariff;
-        }
-        else return area*tariff;
-    }
-    public int calculDelta(){
-        return lastIndex-startIndex;
-    }
-    public ComService cloneComService(){
-        ComService comServiceClone;
-        if(this.isCounter()) {
-            comServiceClone = new ComService(this.name, this.tariff);
-            comServiceClone.setCurUser(curUser);
-        }
-        else{
-            comServiceClone = new ComService(this.name, this.tariff, this.area);
-            comServiceClone.setCurUser(curUser);
-        }
-        return comServiceClone;
-    }
 
 }
