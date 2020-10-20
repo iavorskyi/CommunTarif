@@ -70,4 +70,23 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
     }
 
+    public void update(User user, Map<String, String> form) {
+        User userToUpdate = userRepo.getOne(user.getId());
+        userToUpdate.setUsername(user.getUsername());
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());//Весь перечень ролей переводим в список String-ов
+        userToUpdate.getRoles().clear();
+        form.keySet().forEach(key -> {
+            if (
+                    roles.contains(key)) {
+                userToUpdate.getRoles().add(Role.valueOf(key));
+            }
+        });
+        userRepo.save(userToUpdate);
+    }
+
+    public void delete(long id) {
+        userRepo.deleteById(id);
+    }
 }

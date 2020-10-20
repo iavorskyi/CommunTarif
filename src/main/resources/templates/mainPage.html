@@ -101,7 +101,7 @@
                     </li>
                 </ul>
                 <!-- Удаление сервиса по ID -->
-                <form method="post" action="delete" name="delete">
+                <form th:method="DELETE" th:action="@{/delete}" >
                     <div class="form-group">
                         <input class="form-control" type="hidden" name="id"
                                th:value="${comService.getId()}">

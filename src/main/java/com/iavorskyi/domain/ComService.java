@@ -1,6 +1,10 @@
 package com.iavorskyi.domain;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 @Entity
 public class ComService {
@@ -85,7 +89,9 @@ public class ComService {
     }
 
     public double getCost() {
-        return cost;
+        BigDecimal result = new BigDecimal(cost);
+        result = result.setScale(2, RoundingMode.UP);
+        return result.doubleValue();
     }
 
     public void setCost(double cost) {

@@ -17,7 +17,7 @@
 <div class="container mt-4">
     <h2>Список пользователей</h2>
     <div>
-        <table class="table" th:border="1">
+        <table class="table" >
             <thead class="thead-light">
             <tr>
                 <th scope="col">ID</th>
@@ -33,7 +33,17 @@
                     <th:block th:each="role : ${user.getRoles()}"
                               th:utext="${role} + ' '"/>
                 </td>
-                <td><a th:href="@{/user/{id}(id=${user.getId()})}">edit</a></td>
+                <td>
+                    <form class="width-4" th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
+                        <span class="mr-4">
+                        <a th:href="@{/user/{id}/edit(id=${user.getId()})}">Изменить</a>
+                        </span>
+                        <input type="submit" value="Удалить">
+
+                    </form>
+                </td>
+
+
             </tr>
         </table>
     </div>
