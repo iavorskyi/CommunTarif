@@ -1,6 +1,11 @@
 package com.iavorskyi.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -11,8 +16,10 @@ public class ComService {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
+    @NotEmpty(message = "Укажите название сервиса")
+    @Length(min = 1, max = 25, message = "Название сервиса должно содержать от 1 до 25 символов")
     private String name;
+    @NotNull(message = "Тариф должен быть больше нуля")
     private double tariff;
     private int startIndex;
     private int lastIndex;

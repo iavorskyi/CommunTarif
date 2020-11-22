@@ -8,11 +8,10 @@ import com.iavorskyi.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -77,6 +76,8 @@ public class FirstController {
         model.addAttribute("currentMonth", currentMonth);
         model.addAttribute("monthEnum", Months.JANUARY);
         model.addAttribute("user", user);
+        model.addAttribute("comService", new ComService());
+
         return "mainPage";
     }
 
@@ -101,14 +102,14 @@ public class FirstController {
     public String addService(@RequestParam(required = false) Integer year,
                              @RequestParam(required = false) Months month,
                              @RequestParam(required = false) boolean notDefaultService,
+//                             @ModelAttribute ComService comService,
                              Model model,
                              @AuthenticationPrincipal User user) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
-
         boolean isYearNotNull = true;
         boolean isMonthNotNull = true;
-        List<ComService> listOfDefaultServices = user.getComServiceList().stream().filter(comService -> comService.getYear() == 0).collect(Collectors.toList());
+        List<ComService> listOfDefaultServices = user.getComServiceList().stream().filter(comServ -> comServ.getYear() == 0).collect(Collectors.toList());
         if (year == null) {//если год в фильтре на главной странице пустой
             isYearNotNull = false;
             year = calendar.get(Calendar.YEAR);//передает текущий год
@@ -124,12 +125,15 @@ public class FirstController {
         model.addAttribute("isYearNotNull", isYearNotNull);
         model.addAttribute("isMonthNotNull", isMonthNotNull);
         model.addAttribute("user", user);
+        model.addAttribute("comService", new ComService());
 
         return "addService";
     }
 
     @PostMapping("/add_service")
     public String addService(@AuthenticationPrincipal User user,
+                             @ModelAttribute @Valid ComService comService,
+                             BindingResult bindingResult,
                              @RequestParam String name,
                              @RequestParam(required = false) String counter,
                              @RequestParam Double tariff,
@@ -137,6 +141,9 @@ public class FirstController {
                              @RequestParam(required = false) Integer filteryear,
                              @RequestParam(required = false) Months filtermonth,
                              @RequestParam(required = false) boolean notDefaultService) { //передает true, если добавляет пустую форму для нового сервиса
+        if(bindingResult.hasErrors()){
+            return "redirect:/add_service";
+        }
         comServService.addService(user, name, counter, tariff, area, filteryear, filtermonth, notDefaultService);
         return "redirect:/add_service";
     }
@@ -152,6 +159,6 @@ public class FirstController {
     public String greating(@AuthenticationPrincipal User user,
                            Model model) {
         model.addAttribute("user", user);
-        return "/greating";
+        return "index";
     }
 }
