@@ -1,11 +1,13 @@
 package com.iavorskyi.domain;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +19,13 @@ public class User  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty(message = "Поле не должно быть пустым")
+    @Length(min = 2, max = 20, message = "Имя должно содержать от 2 до 20 символов")
     private String username;
+    @Length(min=1, max = 16, message = "Пароль должен содержать от 1 до 16 символов")
     private String password;
     private boolean active;
+    @Email
     private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

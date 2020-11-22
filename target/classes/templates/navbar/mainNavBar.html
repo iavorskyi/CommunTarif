@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fragment</title>
+</head>
+<body>
+<!--Навигационная панель-->
+<div th:fragment="nav-bar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <th:block th:text="ComAssist"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/main">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add_service">Добавить шаблон</a>
+                    <!-- Форма для перхода на страницу добавления default Сервиса  -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tariff">Тарифы</a>
+                </li>
+                <li class="nav-item" th:if="${user!=null && user.isAdmin()}">
+                    <a class="nav-link" href="/user">Пользователи</a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-text"><span th:text="${user!=null? user.getUsername():_}"></span></div><!-- отображается только при логине -->
+        <div class="col-sm-3 ml-1">
+            <form th:action="@{/logout}" method="post">
+                <input th:if="${user!=null}" type="submit" class="btn btn-primary" value="Выйти"/>
+            </form>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>

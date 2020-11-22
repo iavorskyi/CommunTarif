@@ -8,8 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -40,8 +42,12 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public String userEdit(@PathVariable("id") long id,
-                           @ModelAttribute ("user") User user,
+                           @ModelAttribute ("user") @Valid User user,
+                           BindingResult bindingResult,
                            @RequestParam Map<String, String> form) {
+        if(bindingResult.hasErrors()){
+            return "userEdit";
+        }
         userService.update(user, form);
         return "redirect:/user";
     }

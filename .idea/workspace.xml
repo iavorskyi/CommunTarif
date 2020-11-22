@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ac5dad30-2cb6-4b1b-bb45-e7c2e71aef15" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/config/EncriptionConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/FirstController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/FirstController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/domain/ComService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/domain/ComService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/iavorskyi/repos/ComServiceRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/iavorskyi/repos/ComServiceRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/addService.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/addService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/greating.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/registration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/userEdit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/userEdit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/iavorskyi/domain/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/iavorskyi/domain/UserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources/12146add-1b71-4ad2-a256-cff6b61595dc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources/12146add-1b71-4ad2-a256-cff6b61595dc/storage_v2/_src_/database/communal.kCEf3A.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources/12146add-1b71-4ad2-a256-cff6b61595dc/storage_v2/_src_/database/communal.kCEf3A/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources/12146add-1b71-4ad2-a256-cff6b61595dc/storage_v2/_src_/database/communal.kCEf3A/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/dataSources/12146add-1b71-4ad2-a256-cff6b61595dc/storage_v2/_src_/database/communal.kCEf3A/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Новая папка/.idea/vcs.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.3\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectId" id="1k0Bo1HBzJlB6GqdwoaZdLtv2ML" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$MAVEN_REPOSITORY$/antlr/antlr/2.7.7" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
+  </component>
+  <component name="RunManager" selected="Spring Boot.ApplicationStart">
+    <configuration name="UserTest.isAdmin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CommunTarif" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.iavorskyi.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.iavorskyi.domain" />
+      <option name="MAIN_CLASS_NAME" value="com.iavorskyi.domain.UserTest" />
+      <option name="METHOD_NAME" value="isAdmin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationStart" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="CommunTarif" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.iavorskyi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.iavorskyi.ApplicationStart" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ApplicationStart" />
+        <item itemvalue="JUnit.UserTest.isAdmin" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ac5dad30-2cb6-4b1b-bb45-e7c2e71aef15" name="Default Changelist" comment="" />
+      <created>1604827800013</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604827800013</updated>
+      <workItem from="1604827801097" duration="5893000" />
+      <workItem from="1605218255276" duration="1108000" />
+      <workItem from="1605219473490" duration="2644000" />
+      <workItem from="1605281072714" duration="760000" />
+      <workItem from="1605624441848" duration="15215000" />
+      <workItem from="1606048352523" duration="8981000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/testsProj" />
+    </ignored-roots>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="523" y="0" key="#Code_Folding" timestamp="1606052746809">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="523" y="0" key="#Code_Folding/0.0.1536.824@0.0.1536.824" timestamp="1606052746809" />
+    <state x="361" y="0" key="#Java" timestamp="1605218533837">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="0" key="#Java/0.0.1536.824@0.0.1536.824" timestamp="1605218533837" />
+    <state x="249" y="0" key="#Project_Structure" timestamp="1605221343180">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1605221343180" />
+    <state x="376" y="105" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606049478400">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="376" y="105" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1606049478400" />
+    <state x="473" y="154" key="FileChooserDialogImpl" timestamp="1605221167029">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605221167029" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1606083036889">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606083036889" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1606083036884">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606083036884" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1606083036884">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606083036884" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1606083036886">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606083036886" />
+    <state width="1493" height="210" key="GridCell.Tab.1.bottom" timestamp="1606083036890">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606083036890" />
+    <state width="1493" height="210" key="GridCell.Tab.1.center" timestamp="1606083036890">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1606083036890" />
+    <state width="1493" height="210" key="GridCell.Tab.1.left" timestamp="1606083036890">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1606083036890" />
+    <state width="1493" height="210" key="GridCell.Tab.1.right" timestamp="1606083036890">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1606083036890" />
+    <state width="1493" height="261" key="GridCell.Tab.2.bottom" timestamp="1606080403882">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606080403882" />
+    <state width="1493" height="261" key="GridCell.Tab.2.center" timestamp="1606080403880">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1606080403880" />
+    <state width="1493" height="261" key="GridCell.Tab.2.left" timestamp="1606080403880">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1606080403880" />
+    <state width="1493" height="261" key="GridCell.Tab.2.right" timestamp="1606080403882">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1606080403882" />
+    <state x="299" y="67" key="Maven.ArtifactSearchDialog" timestamp="1605218112588">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="299" y="67" key="Maven.ArtifactSearchDialog/0.0.1536.824@0.0.1536.824" timestamp="1605218112588" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1605220922681">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1605220922681" />
+    <state x="499" y="217" key="com.intellij.database.dbimport.ImportUtil.ChooseTargetDialog" timestamp="1606050834002">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="499" y="217" key="com.intellij.database.dbimport.ImportUtil.ChooseTargetDialog/0.0.1536.824@0.0.1536.824" timestamp="1606050834002" />
+    <state x="209" y="33" key="new project wizard" timestamp="1605218585683">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="209" y="33" key="new project wizard/0.0.1536.824@0.0.1536.824" timestamp="1605218585683" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1605721644295">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605721644295" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/iavorskyi/ApplicationStart.java</url>
+          <line>8</line>
+          <properties class="com.iavorskyi.ApplicationStart" method="main">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
